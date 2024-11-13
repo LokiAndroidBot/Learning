@@ -47,7 +47,13 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "META-INF/LICENSE.md"
+            excludes += "META-INF/LICENSE.txt"
+            excludes += "META-INF/NOTICE.md"
+            excludes += "META-INF/NOTICE.txt"
+            excludes += "META-INF/LICENSE-notice.md"
         }
+
     }
 }
 dependencies {
@@ -69,7 +75,8 @@ dependencies {
     implementation(libs.logging.interceptor)                  // Logging interceptor for Retrofit
 
     // -------------------- Dependency Injection --------------------
-    implementation(libs.hilt.android)                         // Hilt Android
+    implementation(libs.hilt.android)
+    implementation(libs.androidx.junit.ktx)                         // Hilt Android
     testImplementation(libs.hilt.android.testing)            // Hilt Android support for tests
     ksp(libs.hilt.compiler)                                  // Hilt compiler (using KSP)
     implementation(libs.androidx.hilt.navigation.compose)    // Hilt navigation support for Compose
@@ -85,6 +92,6 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.manifest)        // Manifest for Compose UI tests
 
     // -------------------- Debugging Tools --------------------
-    //debugImplementation(libs.androidx.ui.tooling)           // Tooling support for Compose in debug mode
-    //debugImplementation(libs.androidx.ui.test.manifest)     // Manifest testing support for Compose
+    debugImplementation(libs.androidx.ui.tooling)           // Tooling support for Compose in debug mode
+    debugImplementation(libs.androidx.ui.test.manifest)     // Manifest testing support for Compose
 }

@@ -28,6 +28,7 @@ mockitoCore = "5.14.2"
 mockk = "1.13.13"
 mockkAndroid = "1.13.13"
 hiltAndroidTesting = "2.52"
+junitKtx = "1.2.1"
 
 
 [libraries]
@@ -78,6 +79,7 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 # Unit Testing with Mockito
 mockitoKotlin = { group = "org.mockito", name = "mockito-kotlin", version.ref = "mockitoKotlin" }
 mockitoCore = { group = "org.mockito", name = "mockito-core", version.ref = "mockitoCore" }
+androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
 
 [plugins]
 # Android Plugin
