@@ -35,5 +35,25 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Build and run tests
-        run: ./gradlew build --no-daemon
+      - name: Build and run unit tests
+        run: ./gradlew testDebugUnitTest --no-daemon
+
+      - name: Run lint check
+        run: ./gradlew lintDebug --no-daemon
+
+      - name: Run instrumentation tests
+        run: ./gradlew connectedAndroidTest --no-daemon
+
+      - name: Generate code coverage report
+        run: ./gradlew jacocoTestReport
+
+      - name: Upload code coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: true
+
+      - name: Run dependency analysis
+        run: ./gradlew dependencyCheckAnalyze
