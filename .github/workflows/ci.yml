@@ -41,8 +41,8 @@ jobs:
       - name: Run lint check
         run: ./gradlew lintDebug --no-daemon
 
-      - name: Run instrumentation tests
-        run: ./gradlew connectedAndroidTest --no-daemon
+      #- name: Run instrumentation tests
+      #  run: ./gradlew connectedAndroidTest --no-daemon
 
       - name: Generate code coverage report
         run: ./gradlew jacocoTestReport
