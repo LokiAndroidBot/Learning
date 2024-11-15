@@ -3,7 +3,7 @@ package com.example.learning.di
 import com.example.learning.data.api.ApiService
 import com.example.learning.data.repository.UserRepository
 import com.example.learning.data.repository.UserRepositoryImpl
-import com.example.learning.domain.FetchUserDataUseCase
+import com.example.learning.domain.FetchUserUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -43,7 +43,7 @@ object AppModule {
     }
 
     @Provides
-    fun provideFetchUserUseCase(userRepository: UserRepository): FetchUserDataUseCase {
-        return FetchUserDataUseCase(userRepository)
+    fun provideFetchUserUseCase(userRepository: UserRepository): FetchUserUseCase {
+        return FetchUserUseCase(userRepository)
     }
 }
