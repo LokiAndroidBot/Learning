@@ -76,7 +76,9 @@ dependencies {
 
     // -------------------- Dependency Injection --------------------
     implementation(libs.hilt.android)
-    implementation(libs.androidx.junit.ktx)                         // Hilt Android
+    implementation(libs.androidx.junit.ktx)
+    implementation(libs.testing)
+    implementation(libs.firebase.crashlytics.buildtools)                         // Hilt Android
     testImplementation(libs.hilt.android.testing)            // Hilt Android support for tests
     ksp(libs.hilt.compiler)                                  // Hilt compiler (using KSP)
     implementation(libs.androidx.hilt.navigation.compose)    // Hilt navigation support for Compose

@@ -29,6 +29,8 @@ mockk = "1.13.13"
 mockkAndroid = "1.13.13"
 hiltAndroidTesting = "2.52"
 junitKtx = "1.2.1"
+testing = "1.0.0"
+firebaseCrashlyticsBuildtools = "3.0.2"
 
 
 [libraries]
@@ -80,6 +82,8 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 mockitoKotlin = { group = "org.mockito", name = "mockito-kotlin", version.ref = "mockitoKotlin" }
 mockitoCore = { group = "org.mockito", name = "mockito-core", version.ref = "mockitoCore" }
 androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
+testing = { group = "com.google.assistant.appactions", name = "testing", version.ref = "testing" }
+firebase-crashlytics-buildtools = { group = "com.google.firebase", name = "firebase-crashlytics-buildtools", version.ref = "firebaseCrashlyticsBuildtools" }
 
 [plugins]
 # Android Plugin

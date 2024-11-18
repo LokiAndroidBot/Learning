@@ -17,11 +17,35 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import coil3.compose.AsyncImage
 import com.example.learning.data.model.User
 import com.example.learning.presentation.intent.UserIntent
 import com.example.learning.presentation.state.UserViewState
 import com.example.learning.presentation.viewmodel.UserViewModel
+
+@Composable
+fun MyApp() {
+    val navController = rememberNavController()
+
+    NavHost(navController = navController, startDestination = "initial_screen") {
+        composable("initial_screen") {
+            InitialScreen(navController)
+        }
+        composable("login_screen") {
+            LoginScreen(navController)
+        }
+        composable("signup_screen") {
+            SignupScreen(navController)
+        }
+        composable("user_app_screen") {
+            UserScreen()
+        }
+    }
+}
+
 
 // UserScreen.kt
 @Composable
