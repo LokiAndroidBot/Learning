@@ -47,6 +47,9 @@ jobs:
       - name: Run lint check
         run: ./gradlew lintDebug --no-daemon
 
+      - name: Run lint Fix
+        run: ./gradlew lintFixDebug
+
       #- name: Run instrumentation tests
       #  run: ./gradlew connectedAndroidTest --no-daemon
 
