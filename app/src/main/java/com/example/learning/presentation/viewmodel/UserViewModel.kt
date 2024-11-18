@@ -2,7 +2,7 @@ package com.example.learning.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.learning.domain.FetchUserDataUseCase
+import com.example.learning.domain.FetchUserUseCase
 import com.example.learning.presentation.intent.UserIntent
 import com.example.learning.presentation.state.UserViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +14,7 @@ import javax.inject.Inject
 // UserViewModel.kt
 @HiltViewModel
 class UserViewModel @Inject constructor(
-    private val fetchUserDataUseCase: FetchUserDataUseCase
+    private val fetchUserUseCase: FetchUserUseCase,
 ) : ViewModel() {
 
     private val _viewState = MutableStateFlow<UserViewState>(UserViewState.Idle)
@@ -29,7 +29,7 @@ class UserViewModel @Inject constructor(
     private fun fetchUser(userId: String) {
         viewModelScope.launch {
             _viewState.value = UserViewState.Loading
-            val result = fetchUserDataUseCase()
+            val result = fetchUserUseCase()
             _viewState.value = if (result.isSuccess) {
                 UserViewState.Success(result.getOrNull()!!)
             } else {
@@ -38,4 +38,3 @@ class UserViewModel @Inject constructor(
         }
     }
 }
-
