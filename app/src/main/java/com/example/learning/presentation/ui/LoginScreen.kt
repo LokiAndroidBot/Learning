@@ -47,7 +47,7 @@ fun LoginScreen(navController: NavHostController, authViewModel: AuthViewModel =
             .fillMaxSize()
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
     ) {
         // Username Input
         TextField(
@@ -56,7 +56,7 @@ fun LoginScreen(navController: NavHostController, authViewModel: AuthViewModel =
             label = { Text("Username") },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
-            isError = state.errorMessage != null
+            isError = state.errorMessage != null,
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -69,7 +69,7 @@ fun LoginScreen(navController: NavHostController, authViewModel: AuthViewModel =
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
-            isError = state.errorMessage != null
+            isError = state.errorMessage != null,
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -78,7 +78,8 @@ fun LoginScreen(navController: NavHostController, authViewModel: AuthViewModel =
         Button(
             onClick = {
                 authViewModel.onLogin(state.username, state.password)
-            }, modifier = Modifier.fillMaxWidth()
+            },
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Text("Login")
         }
@@ -93,7 +94,9 @@ fun LoginScreen(navController: NavHostController, authViewModel: AuthViewModel =
         state.errorMessage?.let { errorMessage ->
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = errorMessage, color = Color.Red, modifier = Modifier.padding(8.dp)
+                text = errorMessage,
+                color = Color.Red,
+                modifier = Modifier.padding(8.dp),
             )
         }
     }

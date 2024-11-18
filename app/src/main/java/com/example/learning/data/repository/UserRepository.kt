@@ -4,7 +4,6 @@ import com.example.learning.data.api.ApiService
 import com.example.learning.data.model.User
 import javax.inject.Inject
 
-
 // UserRepository.kt
 interface UserRepository {
     suspend fun getUserData(): Result<List<User>>

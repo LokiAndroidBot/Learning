@@ -5,7 +5,7 @@ import com.google.assistant.appactions.testing.aatl.converter.ValidationExceptio
 import javax.inject.Inject
 
 class AuthUseCase @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
 ) {
 
     suspend fun executeLogin(username: String, password: String): Result<Unit> {
@@ -19,7 +19,9 @@ class AuthUseCase @Inject constructor(
     }
 
     suspend fun executeSignup(
-        username: String, password: String, confirmPassword: String
+        username: String,
+        password: String,
+        confirmPassword: String,
     ): Result<Unit> {
         if (password != confirmPassword) {
             return Result.failure(ValidationException("Passwords do not match"))

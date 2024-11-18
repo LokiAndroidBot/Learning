@@ -24,8 +24,10 @@ class FetchUserUseCaseTest {
         // Arrange: Set up the mocked data
         val mockUserList = listOf(
             User(
-                Name("", "John Doe", ""), email = "johndoe@example.com", Picture("")
-            )
+                Name("", "John Doe", ""),
+                email = "johndoe@example.com",
+                Picture(""),
+            ),
         )
         coEvery { userRepository.getUserData() } returns Result.success(mockUserList)
 

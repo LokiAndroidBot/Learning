@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    private val authUseCase: AuthUseCase
+    private val authUseCase: AuthUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(AuthState())
@@ -43,7 +43,7 @@ class AuthViewModel @Inject constructor(
             } else {
                 _state.value = _state.value.copy(
                     isLoading = false,
-                    errorMessage = result.exceptionOrNull()?.message ?: "Unknown error"
+                    errorMessage = result.exceptionOrNull()?.message ?: "Unknown error",
                 )
             }
         }

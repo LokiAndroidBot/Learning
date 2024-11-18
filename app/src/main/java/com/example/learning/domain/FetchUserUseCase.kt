@@ -4,7 +4,7 @@ import com.example.learning.data.model.User
 import com.example.learning.data.repository.UserRepository
 
 class FetchUserUseCase(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) {
     suspend operator fun invoke(): Result<List<User>> {
         return try {

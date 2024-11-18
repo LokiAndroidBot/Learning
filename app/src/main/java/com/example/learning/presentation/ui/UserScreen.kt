@@ -46,7 +46,6 @@ fun MyApp() {
     }
 }
 
-
 // UserScreen.kt
 @Composable
 fun UserScreen(userViewModel: UserViewModel = hiltViewModel()) {
@@ -55,7 +54,7 @@ fun UserScreen(userViewModel: UserViewModel = hiltViewModel()) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
     ) {
         when (val state = viewState) {
             is UserViewState.Idle -> Text("Enter a user ID to fetch user data.")
@@ -73,19 +72,18 @@ fun UserScreen(userViewModel: UserViewModel = hiltViewModel()) {
 @Composable
 fun UserContent(user: List<User>) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
     ) {
         LazyColumn {
             items(user) { userDetails ->
-                Text("User ID: ${userDetails}")
+                Text("User ID: $userDetails")
                 Text("Name: ${userDetails.name}")
                 Text("Email: ${userDetails.email}")
             }
         }
-
     }
 }
-
 
 @Composable
 fun UserItem(user: User) {
@@ -93,7 +91,7 @@ fun UserItem(user: User) {
     AsyncImage(
         model = user.picture,
         contentDescription = "Image",
-        modifier = Modifier.size(128.dp) // Adjust size as needed
+        modifier = Modifier.size(128.dp),
     )
 }
 

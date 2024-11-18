@@ -3,14 +3,13 @@ package com.example.learning.data.repository.auth
 import com.example.learning.data.api.ApiService
 import javax.inject.Inject
 
-
 interface AuthRepository {
     suspend fun login(username: String, password: String): Result<Unit>
     suspend fun signup(username: String, password: String, confirmPassword: String): Result<Unit>
 }
 
 class AuthRepositoryImpl @Inject constructor(
-    private val apiService: ApiService
+    private val apiService: ApiService,
 ) : AuthRepository {
 
     override suspend fun login(username: String, password: String): Result<Unit> {
@@ -27,11 +26,13 @@ class AuthRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             Result.failure(e) // Catching any exception that occurred during the network call
         }
-        //return apiService.login(username, password)
+        // return apiService.login(username, password)
     }
 
     override suspend fun signup(
-        username: String, password: String, confirmPassword: String
+        username: String,
+        password: String,
+        confirmPassword: String,
     ): Result<Unit> {
         // Perform signup API call or logic here
         // Step 1: Check if passwords match
@@ -51,7 +52,7 @@ class AuthRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             Result.failure(e) // Handle network failure or other exceptions
         }
-        //return apiService.signup(username, password, confirmPassword)
+        // return apiService.signup(username, password, confirmPassword)
     }
 }
 

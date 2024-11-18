@@ -2,7 +2,6 @@ package com.example.learning.presentation.state
 
 import com.example.learning.data.model.User
 
-
 // UserViewState.kt
 sealed class UserViewState {
     data object Idle : UserViewState()

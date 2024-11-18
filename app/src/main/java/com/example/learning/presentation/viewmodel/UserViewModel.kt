@@ -14,7 +14,7 @@ import javax.inject.Inject
 // UserViewModel.kt
 @HiltViewModel
 class UserViewModel @Inject constructor(
-    private val fetchUserUseCase: FetchUserUseCase
+    private val fetchUserUseCase: FetchUserUseCase,
 ) : ViewModel() {
 
     private val _viewState = MutableStateFlow<UserViewState>(UserViewState.Idle)
@@ -38,4 +38,3 @@ class UserViewModel @Inject constructor(
         }
     }
 }
-

@@ -35,8 +35,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
+      #- name: Check spotless
+      #  run: ./gradlew spotlessCheck --init-script gradle/init.gradle.kts --no-configuration-cache
+
       - name: Check spotless
-        run: ./gradlew spotlessCheck --init-script gradle/init.gradle.kts --no-configuration-cache
+        run: ./gradlew spotlessApply --init-script gradle/init.gradle.kts --no-configuration-cache
 
       - name: Build and run unit tests
         run: ./gradlew testDebugUnitTest --no-daemon
@@ -50,13 +53,13 @@ jobs:
       #- name: Generate code coverage report
       #  run: ./gradlew jacocoTestReport
 
-#      - name: Upload code coverage to Codecov
-#        uses: codecov/codecov-action@v3
-#        with:
-#          file: ./app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
-#          flags: unittests
-#          name: codecov-umbrella
-#          fail_ci_if_error: true
+      #      - name: Upload code coverage to Codecov
+      #        uses: codecov/codecov-action@v3
+      #        with:
+      #          file: ./app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
+      #          flags: unittests
+      #          name: codecov-umbrella
+      #          fail_ci_if_error: true
 
-     # - name: Run dependency analysis
+      # - name: Run dependency analysis
     #  run: ./gradlew dependencyCheckAnalyze
