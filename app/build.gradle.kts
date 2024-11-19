@@ -68,28 +68,23 @@ jacoco {
     // Optionally, set the tool version for tasks if needed
     toolVersion = "0.8.10"
 }
-
-tasks.register<JacocoReport>("combinedTestReport") {
-    dependsOn("testDebugUnitTest", "createDebugCoverageReport") // Add your test tasks here
+tasks.register<JacocoReport>("advancedTestReport") {
+    dependsOn("testDebugUnitTest", "connectedDebugAndroidTest") // Run both unit and UI tests
 
     reports {
-        xml.required.set(true)
-        html.required.set(true)
+        xml.required.set(true)  // Enable XML report (for CI integration)
+        html.required.set(true) // Enable HTML report
+        csv.required.set(false) // Optional: Enable CSV report if needed
     }
 
-    // Combine coverage data
     executionData.setFrom(fileTree(buildDir) {
         include(
-            "jacoco/testDebugUnitTest.exec",
-            "outputs/code_coverage/debugAndroidTest/connected/**/*.ec"
+            "jacoco/testDebugUnitTest.exec", // Unit test coverage
+            "outputs/code_coverage/debugAndroidTest/connected/**/*.ec" // Instrumentation coverage
         )
     })
 
-    sourceDirectories.setFrom(
-        files("src/main/java", "src/main/kotlin")
-    )
-
-    classDirectories.setFrom(fileTree("${buildDir}/intermediates/classes/debug") {
+    classDirectories.setFrom(fileTree("$buildDir/intermediates/classes/debug") {
         exclude(
             "**/R.class",
             "**/R$*.class",
@@ -99,7 +94,12 @@ tasks.register<JacocoReport>("combinedTestReport") {
             "android/**/*.*"
         )
     })
+
+    sourceDirectories.setFrom(
+        files("src/main/java", "src/main/kotlin")
+    )
 }
+
 
 dependencies {
     // -------------------- Core Android Libraries --------------------

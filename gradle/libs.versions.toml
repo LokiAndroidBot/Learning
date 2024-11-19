@@ -99,3 +99,5 @@ hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 
 # KSP Plugin for annotation processing
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+
+jacoco = { id = "jacoco"}
