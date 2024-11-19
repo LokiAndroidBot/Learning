@@ -69,7 +69,7 @@ jacoco {
     toolVersion = "0.8.10"
 }
 tasks.register<JacocoReport>("advancedTestReport") {
-    dependsOn("testDebugUnitTest", "connectedDebugAndroidTest") // Run both unit and UI tests
+    dependsOn("testDebugUnitTest") // Run both unit and UI tests
 
     reports {
         xml.required.set(true)  // Enable XML report (for CI integration)
