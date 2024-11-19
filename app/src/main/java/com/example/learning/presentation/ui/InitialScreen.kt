@@ -27,5 +27,9 @@ fun InitialScreen(navController: NavHostController) {
         Button(onClick = { navController.navigate("signup_screen") }) {
             Text(text = "Signup")
         }
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(onClick = { navController.navigate("calc_screen") }) {
+            Text(text = "Calc")
+        }
     }
 }

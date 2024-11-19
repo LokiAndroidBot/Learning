@@ -31,6 +31,7 @@ hiltAndroidTesting = "2.52"
 junitKtx = "1.2.1"
 testing = "1.0.0"
 firebaseCrashlyticsBuildtools = "3.0.2"
+kotlinxCoroutinesTest = "1.9.0"
 
 
 [libraries]
@@ -84,6 +85,7 @@ mockitoCore = { group = "org.mockito", name = "mockito-core", version.ref = "moc
 androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
 testing = { group = "com.google.assistant.appactions", name = "testing", version.ref = "testing" }
 firebase-crashlytics-buildtools = { group = "com.google.firebase", name = "firebase-crashlytics-buildtools", version.ref = "firebaseCrashlyticsBuildtools" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 
 [plugins]
 # Android Plugin

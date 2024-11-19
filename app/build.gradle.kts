@@ -55,6 +55,12 @@ android {
         }
 
     }
+    lint {
+        htmlReport = true
+        xmlReport = true
+        htmlOutput = file("$buildDir/reports/lint-results.html")
+        xmlOutput = file("$buildDir/reports/lint-results.xml")
+    }
 }
 dependencies {
     // -------------------- Core Android Libraries --------------------
@@ -79,7 +85,9 @@ dependencies {
     implementation(libs.androidx.junit.ktx)
     implementation(libs.testing)
     implementation(libs.firebase.crashlytics.buildtools)                         // Hilt Android
-    testImplementation(libs.hilt.android.testing)            // Hilt Android support for tests
+    testImplementation(libs.hilt.android.testing)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.junit)            // Hilt Android support for tests
     ksp(libs.hilt.compiler)                                  // Hilt compiler (using KSP)
     implementation(libs.androidx.hilt.navigation.compose)    // Hilt navigation support for Compose
 
