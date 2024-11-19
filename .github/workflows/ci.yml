@@ -53,16 +53,16 @@ jobs:
       #- name: Run instrumentation tests
       #  run: ./gradlew connectedAndroidTest --no-daemon
 
-      #- name: Generate code coverage report
-      #  run: ./gradlew jacocoTestReport
+      - name: Generate code coverage report
+        run: ./gradlew jacocoTestReport
 
-      #      - name: Upload code coverage to Codecov
-      #        uses: codecov/codecov-action@v3
-      #        with:
-      #          file: ./app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
-      #          flags: unittests
-      #          name: codecov-umbrella
-      #          fail_ci_if_error: true
+      - name: Upload code coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+                file: ./app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
+                flags: unittests
+                name: codecov-umbrella
+                fail_ci_if_error: true
 
       # - name: Run dependency analysis
     #  run: ./gradlew dependencyCheckAnalyze

@@ -4,6 +4,8 @@ plugins {
 
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
+
+    jacoco
 }
 
 android {
@@ -62,6 +64,43 @@ android {
         xmlOutput = file("$buildDir/reports/lint-results.xml")
     }
 }
+jacoco {
+    // Optionally, set the tool version for tasks if needed
+    toolVersion = "0.8.10"
+}
+
+tasks.register<JacocoReport>("combinedTestReport") {
+    dependsOn("testDebugUnitTest", "createDebugCoverageReport") // Add your test tasks here
+
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+    }
+
+    // Combine coverage data
+    executionData.setFrom(fileTree(buildDir) {
+        include(
+            "jacoco/testDebugUnitTest.exec",
+            "outputs/code_coverage/debugAndroidTest/connected/**/*.ec"
+        )
+    })
+
+    sourceDirectories.setFrom(
+        files("src/main/java", "src/main/kotlin")
+    )
+
+    classDirectories.setFrom(fileTree("${buildDir}/intermediates/classes/debug") {
+        exclude(
+            "**/R.class",
+            "**/R$*.class",
+            "**/BuildConfig.*",
+            "**/Manifest*.*",
+            "**/*Test*.*",
+            "android/**/*.*"
+        )
+    })
+}
+
 dependencies {
     // -------------------- Core Android Libraries --------------------
     implementation(libs.androidx.core.ktx)                   // Core KTX extensions
