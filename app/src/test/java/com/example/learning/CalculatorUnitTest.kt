@@ -14,7 +14,7 @@ class CalculatorUnitTest {
 
     @Before
     fun setUp() {
-        viewModel = CalculatorViewModel()  // Initialize the ViewModel
+        viewModel = CalculatorViewModel() // Initialize the ViewModel
     }
 
     @Test
