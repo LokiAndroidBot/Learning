@@ -25,7 +25,18 @@ jobs:
           distribution: 'zulu'
           java-version: 17
 
+      # Cache Gradle dependencies
+      - name: Cache Gradle Dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
 
+      # Set up Android SDK
       - name: Set up Android SDK
         uses: android-actions/setup-android@v2
         with:
@@ -38,52 +49,41 @@ jobs:
           sdkmanager --install "platforms;android-30" "platform-tools" "build-tools;30.0.3"
           sdkmanager --install "system-images;android-30;google_apis;x86"
 
-
       # Grant execute permission for Gradle wrapper
       - name: Grant Execute Permission for Gradlew
         run: chmod +x ./gradlew
-
-      - name: Set up Android SDK
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-            api-level: 30
-            target: google_apis
-            arch: x86_64
-            profile: Nexus 5
-            cores: 2
-            ram-size: 2048
-            emulator-boot-timeout: 600
-            disable-animations: true
-            disable-linux-hw-accel: true
-
-      - name: Run tests
-        run: ./gradlew connectedCheck
-
-      # Cache Gradle dependencies
-      - name: Cache Gradle Dependencies
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
 
       # Spotless check and apply formatting
       - name: Apply Spotless Formatting
         run: ./gradlew spotlessApply --init-script gradle/init.gradle.kts --no-configuration-cache
 
-      # Build and run unit tests
-      - name: Build and Run Unit Tests
-        run: ./gradlew testDebugUnitTest --no-daemon
-
       # Run lint checks
       - name: Run Lint Check
         run: ./gradlew lintDebug --no-daemon
 
+      # Apply Lint Fix (if needed)
       - name: Apply Lint Fix
         run: ./gradlew lintFixDebug --no-daemon
+
+      # Build and run unit tests
+      - name: Build and Run Unit Tests
+        run: ./gradlew testDebugUnitTest --no-daemon
+
+      # Set up Android Emulator
+      - name: Set up Android Emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          target: google_apis
+          arch: x86_64
+          profile: Nexus 5
+          cores: 2
+          ram-size: 2048
+          emulator-boot-timeout: 600
+          disable-animations: true
+          disable-linux-hw-accel: true
+          script: |
+            ./gradlew connectedAndroidTest
 
       # Run instrumentation tests
       - name: Run Instrumentation Tests
