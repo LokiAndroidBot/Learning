@@ -14,10 +14,6 @@ jobs:
 
     steps:
 
-      # Grant execute permission for Gradle wrapper
-      - name: Grant Execute Permission for Gradlew
-        run: chmod +x ./gradlew
-
       # Checkout the repository
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -41,6 +37,11 @@ jobs:
         run: |
           sdkmanager --install "platforms;android-30" "platform-tools" "build-tools;30.0.3"
           sdkmanager --install "system-images;android-30;google_apis;x86"
+
+
+      # Grant execute permission for Gradle wrapper
+      - name: Grant Execute Permission for Gradlew
+        run: chmod +x ./gradlew
 
       - name: Start Emulator
         uses: reactivecircus/android-emulator-runner@v2
