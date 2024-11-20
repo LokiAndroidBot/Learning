@@ -126,7 +126,11 @@ dependencies {
     implementation(libs.firebase.crashlytics.buildtools)                         // Hilt Android
     testImplementation(libs.hilt.android.testing)
     testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.junit)            // Hilt Android support for tests
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.uiautomator)
+    androidTestImplementation(libs.androidx.core)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.runner)            // Hilt Android support for tests
     ksp(libs.hilt.compiler)                                  // Hilt compiler (using KSP)
     implementation(libs.androidx.hilt.navigation.compose)    // Hilt navigation support for Compose
 

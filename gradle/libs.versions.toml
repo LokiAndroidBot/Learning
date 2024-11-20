@@ -32,6 +32,8 @@ junitKtx = "1.2.1"
 testing = "1.0.0"
 firebaseCrashlyticsBuildtools = "3.0.2"
 kotlinxCoroutinesTest = "1.9.0"
+core = "1.6.1"
+runner = "1.6.2"
 
 
 [libraries]
@@ -86,6 +88,8 @@ androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.
 testing = { group = "com.google.assistant.appactions", name = "testing", version.ref = "testing" }
 firebase-crashlytics-buildtools = { group = "com.google.firebase", name = "firebase-crashlytics-buildtools", version.ref = "firebaseCrashlyticsBuildtools" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
+androidx-core = { group = "androidx.test", name = "core", version.ref = "core" }
+androidx-runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
 
 [plugins]
 # Android Plugin
