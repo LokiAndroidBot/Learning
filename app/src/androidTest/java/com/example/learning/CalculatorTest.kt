@@ -40,7 +40,7 @@ class CalculatorTest {
 
         // Check the result
         val resultText = device.findObject(By.textContains("Result")).text  // Replace with the actual ID of the result TextView
-        assertEquals("Result: 5", resultText)
+        assertEquals("Result: 5.0", resultText)
     }
 
     @Test
@@ -66,6 +66,6 @@ class CalculatorTest {
 
         // Check the result
         val resultText = device.findObject(By.textContains("Result")).text  // Replace with the actual ID of the result TextView
-        assertEquals("Result: 2", resultText)
+        assertEquals("Result: 2.0", resultText)
     }
 }
