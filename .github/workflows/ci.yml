@@ -43,31 +43,21 @@ jobs:
       - name: Grant Execute Permission for Gradlew
         run: chmod +x ./gradlew
 
-      - name: Start Emulator
+      - name: Set up Android SDK
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 30
-          target: google_apis
-          arch: x86_64
-          profile: pixel
-          emulator-options: "-no-window -gpu swiftshader_indirect"
-          emulator-boot-timeout: 600
-          disable-animations: true
-          use-snapshots: true
-          script: ./gradlew connectedAndroidTest --no-daemon
+            api-level: 30
+            target: google_apis
+            arch: x86_64
+            profile: Nexus 5
+            cores: 2
+            ram-size: 2048
+            emulator-boot-timeout: 600
+            disable-animations: true
+            disable-linux-hw-accel: true
 
-      - name: Wait for Emulator to Boot
-        run: |
-          for i in {1..30}; do
-            if adb shell getprop sys.boot_completed | grep -m 1 "1"; then
-              echo "Emulator is ready."
-              exit 0
-            fi
-            echo "Waiting for emulator to boot..."
-            sleep 10
-          done
-          echo "Emulator failed to boot."
-          exit 1
+      - name: Run tests
+        run: ./gradlew connectedCheck
 
       # Cache Gradle dependencies
       - name: Cache Gradle Dependencies

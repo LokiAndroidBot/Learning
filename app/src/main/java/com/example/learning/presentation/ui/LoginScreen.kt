@@ -32,7 +32,7 @@ fun LoginScreen(navController: NavHostController, authViewModel: AuthViewModel =
     val context = LocalContext.current
 
     // Handle Navigation or Errors
-    LaunchedEffect(key1 = state.isLoading, key2 = state.errorMessage) {
+    /*LaunchedEffect(key1 = state.isLoading, key2 = state.errorMessage) {
         if (!state.isLoading) {
             if (state.errorMessage == null) {
                 navController.navigate("user_app_screen")
@@ -40,7 +40,7 @@ fun LoginScreen(navController: NavHostController, authViewModel: AuthViewModel =
                 Toast.makeText(context, state.errorMessage, Toast.LENGTH_SHORT).show()
             }
         }
-    }
+    }*/
 
     Column(
         modifier = Modifier
