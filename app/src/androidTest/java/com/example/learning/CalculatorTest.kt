@@ -23,7 +23,7 @@ class CalculatorTest {
         val context: Context = InstrumentationRegistry.getInstrumentation().targetContext
         val packageName = context.packageName
         val intent = context.packageManager.getLaunchIntentForPackage(packageName)
-        intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)  // Clear any existing tasks
+        intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK) // Clear any existing tasks
         context.startActivity(intent)
 
         // Wait for the app to launch
@@ -33,13 +33,13 @@ class CalculatorTest {
 
         device.wait(Until.hasObject(By.text("Result:")), 1000)
         // Perform actions on the UI
-        device.findObject(By.text("2")).click()  // Click "2"
-        device.findObject(By.text("+")).click()  // Click "+"
-        device.findObject(By.text("3")).click()  // Click "3"
-        device.findObject(By.text("=")).click()  // Click "="
+        device.findObject(By.text("2")).click() // Click "2"
+        device.findObject(By.text("+")).click() // Click "+"
+        device.findObject(By.text("3")).click() // Click "3"
+        device.findObject(By.text("=")).click() // Click "="
 
         // Check the result
-        val resultText = device.findObject(By.textContains("Result")).text  // Replace with the actual ID of the result TextView
+        val resultText = device.findObject(By.textContains("Result")).text // Replace with the actual ID of the result TextView
         assertEquals("Result: 5.0", resultText)
     }
 
@@ -65,7 +65,7 @@ class CalculatorTest {
         device.findObject(By.text("=")).click()
 
         // Check the result
-        val resultText = device.findObject(By.textContains("Result")).text  // Replace with the actual ID of the result TextView
+        val resultText = device.findObject(By.textContains("Result")).text // Replace with the actual ID of the result TextView
         assertEquals("Result: 2.0", resultText)
     }
 }
