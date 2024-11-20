@@ -44,6 +44,7 @@ jobs:
           build-tools: 30.0.3
           target: google_apis
 
+      # Install Required System Images
       - name: Install Required System Images
         run: |
           sdkmanager --install "platforms;android-30" "platform-tools" "build-tools;30.0.3"
@@ -52,6 +53,10 @@ jobs:
       # Grant execute permission for Gradle wrapper
       - name: Grant Execute Permission for Gradlew
         run: chmod +x ./gradlew
+
+      # Restart ADB
+      - name: Restart ADB
+        run: adb kill-server && adb start-server
 
       # Spotless check and apply formatting
       - name: Apply Spotless Formatting
@@ -77,17 +82,25 @@ jobs:
           target: google_apis
           arch: x86_64
           profile: Nexus 5
-          cores: 2
-          ram-size: 2048
-          emulator-boot-timeout: 600
+          cores: 1
+          ram-size: 1536
+          emulator-boot-timeout: 1200
           disable-animations: true
-          disable-linux-hw-accel: true
-          script: |
-            ./gradlew connectedAndroidTest
+          force-avd-creation: true
+          emulator-options: -no-window -gpu off -no-snapshot -no-snapshot-load -no-snapshot-save -noaudio -no-boot-anim -wipe-data
+          script: ./gradlew connectedAndroidTest
 
-      # Run instrumentation tests
+      # Verify ADB Devices
+      - name: Verify ADB Devices
+        run: adb devices
+
+      # Run Instrumentation Tests
       - name: Run Instrumentation Tests
         run: ./gradlew connectedAndroidTest --no-daemon
+
+      # Run connected tests
+      - name: Run Connected Tests
+        run: ./gradlew connectedCheck --no-daemon
 
       # Generate code coverage report
       - name: Generate Code Coverage Report
