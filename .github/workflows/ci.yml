@@ -13,6 +13,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
+      # Grant execute permission for Gradle wrapper
+      - name: Grant Execute Permission for Gradlew
+        run: chmod +x ./gradlew
+
       # Checkout the repository
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -24,24 +29,27 @@ jobs:
           distribution: 'zulu'
           java-version: 17
 
-      # Set up Android SDK
+
       - name: Set up Android SDK
         uses: android-actions/setup-android@v2
         with:
           api-level: 30
-          target: 'android-30'
-          build-tools: '30.0.3'
+          build-tools: 30.0.3
+          target: google_apis
 
-      # Start an Android Emulator
+      - name: Install Required System Images
+        run: |
+          sdkmanager --install "platforms;android-30" "platform-tools" "build-tools;30.0.3"
+          sdkmanager --install "system-images;android-30;google_apis;x86"
+
       - name: Start Emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 30
+          target: google_apis
+          arch: x86_64
+          profile: pixel
           script: ./gradlew connectedAndroidTest --no-daemon
-
-      # Grant execute permission for Gradle wrapper
-      - name: Grant Execute Permission for Gradlew
-        run: chmod +x ./gradlew
 
       # Cache Gradle dependencies
       - name: Cache Gradle Dependencies
