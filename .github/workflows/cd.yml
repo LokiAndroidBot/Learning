@@ -7,7 +7,7 @@ on:
       - dev
 
 jobs:
-  build:
+  build_and_upload:
     runs-on: ubuntu-latest
     steps: # Checkout repository
       - name: Checkout code
@@ -20,7 +20,7 @@ jobs:
           distribution: 'zulu'
           java-version: 17
 
-      # Cache Gradle dependencies (optional for faster builds)
+      # Cache Gradle dependencies
       - name: Cache Gradle dependencies
         uses: actions/cache@v2
         with:
@@ -39,23 +39,19 @@ jobs:
           ./gradlew assembleRelease
           ./gradlew assembleDebug
 
-      # List files in APK directory (for debugging purposes)
+      # List files in APK directory
       - name: List files in APK directory
-        run: ls -l app/build/outputs/apk/
-
-      - name: List files in APK directory (for debugging purposes)
         run: |
+          echo "Listing files in APK directory:"
+          ls -l app/build/outputs/apk/
+          
           echo "Listing files in release directory:"
           ls -l app/build/outputs/apk/release/
           
           echo "Listing files in debug directory:"
           ls -l app/build/outputs/apk/debug/
 
-
-  upload:
-    runs-on: ubuntu-latest
-    needs: build  # Ensures this runs only after the build job
-    steps: # Set up environment variables for Diawi
+      # Set up Diawi API Key
       - name: Set up Diawi API Key
         run: echo "DIAWI_API_KEY=${{ secrets.DIAWI_API_KEY }}" >> $GITHUB_ENV
 
@@ -63,47 +59,40 @@ jobs:
       - name: Upload Release APK to Diawi
         id: upload_release
         run: |
-          APK_PATH="app/build/outputs/apk/release/app-release-unsigned.apk"
-          # List available files in the directory
-          echo "Files available in the APK directory:"
-          ls -l app/build/outputs/apk/release/
+          APK_PATH="app/build/outputs/apk/release/app-release.apk"
           
-          # Check if Release APK exists
           if [ ! -f "$APK_PATH" ]; then
             echo "Release APK not found. Exiting."
             exit 1
           fi
-
-          # Upload the APK to Diawi
+          
           DIAWI_RESPONSE=$(curl -X POST \
             -F "file=@${APK_PATH}" \
             -F "token=${DIAWI_API_KEY}" \
             -F "install=true" \
             https://upload.diawi.com/)
 
-          # Extract the link from the response and store it
           DIAWI_LINK=$(echo $DIAWI_RESPONSE | jq -r .link)
+          echo "Release APK uploaded. Link: $DIAWI_LINK"
           echo "DIAWI_LINK=${DIAWI_LINK}" >> $GITHUB_ENV
 
-      # Upload Debug APK to Diawi (Optional)
+      # Upload Debug APK to Diawi
       - name: Upload Debug APK to Diawi (Optional)
         id: upload_debug
         run: |
           APK_PATH="app/build/outputs/apk/debug/app-debug.apk"
           
-          # Check if Debug APK exists
           if [ ! -f "$APK_PATH" ]; then
             echo "Debug APK not found. Skipping."
             exit 0
           fi
           
-          # Upload the Debug APK to Diawi
           DIAWI_RESPONSE=$(curl -X POST \
             -F "file=@${APK_PATH}" \
             -F "token=${DIAWI_API_KEY}" \
             -F "install=true" \
             https://upload.diawi.com/)
 
-          # Extract the link from the response and store it
           DIAWI_DEBUG_LINK=$(echo $DIAWI_RESPONSE | jq -r .link)
+          echo "Debug APK uploaded. Link: $DIAWI_DEBUG_LINK"
           echo "DIAWI_DEBUG_LINK=${DIAWI_DEBUG_LINK}" >> $GITHUB_ENV
