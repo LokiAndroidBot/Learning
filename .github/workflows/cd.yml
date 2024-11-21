@@ -42,6 +42,7 @@ jobs:
           ./gradlew assembleRelease
           ./gradlew assembleDebug
 
+
       # List files in APK directory (for debugging purposes)
       - name: List files in APK directory
         run: ls -l app/build/outputs/apk/
