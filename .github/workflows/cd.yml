@@ -53,13 +53,15 @@ jobs:
 
       # Set up Diawi API Key
       - name: Set up Diawi API Key
-        run: echo "DIAWI_API_KEY=${{ secrets.DIAWI_API_KEY }}" >> $GITHUB_ENV
+        run: |
+          echo "DIAWI_API_KEY=${{ secrets.DIAWI_API_KEY }}" >> $GITHUB_ENV
+          echo DIAWI_API_KEY
 
       # Upload Release APK to Diawi
       - name: Upload Release APK to Diawi
         id: upload_release
         run: |
-          APK_PATH="app/build/outputs/apk/release/app-release.apk"
+          APK_PATH="app/build/outputs/apk/release/app-release-unsigned.apk"
           
           if [ ! -f "$APK_PATH" ]; then
             echo "Release APK not found. Exiting."
