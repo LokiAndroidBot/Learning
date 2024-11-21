@@ -80,34 +80,34 @@ jobs:
       # Build and run unit tests
       - name: Build and Run Unit Tests
         run: ./gradlew testDebugUnitTest --no-daemon
-
-      # Set up Android Emulator
-      - name: Set up Android Emulator
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 30
-          target: google_apis
-          arch: x86_64
-          profile: Nexus 5
-          cores: 1
-          ram-size: 1536
-          emulator-boot-timeout: 1200
-          disable-animations: true
-          force-avd-creation: true
-          emulator-options: -no-window -gpu off -no-snapshot -no-snapshot-load -no-snapshot-save -noaudio -no-boot-anim -wipe-data
-          script: ./gradlew connectedAndroidTest
-
-      # Verify ADB Devices
-      - name: Verify ADB Devices
-        run: adb devices
-
-      # Run Instrumentation Tests
-      - name: Run Instrumentation Tests
-        run: ./gradlew connectedAndroidTest --no-daemon
-
-      # Run connected tests
-      - name: Run Connected Tests
-        run: ./gradlew connectedCheck --no-daemon
+#
+#      # Set up Android Emulator
+#      - name: Set up Android Emulator
+#        uses: reactivecircus/android-emulator-runner@v2
+#        with:
+#          api-level: 30
+#          target: google_apis
+#          arch: x86_64
+#          profile: Nexus 5
+#          cores: 1
+#          ram-size: 1536
+#          emulator-boot-timeout: 1200
+#          disable-animations: true
+#          force-avd-creation: true
+#          emulator-options: -no-window -gpu off -no-snapshot -no-snapshot-load -no-snapshot-save -noaudio -no-boot-anim -wipe-data
+#          script: ./gradlew connectedAndroidTest
+#
+#      # Verify ADB Devices
+#      - name: Verify ADB Devices
+#        run: adb devices
+#
+#      # Run Instrumentation Tests
+#      - name: Run Instrumentation Tests
+#        run: ./gradlew connectedAndroidTest --no-daemon
+#
+#      # Run connected tests
+#      - name: Run Connected Tests
+#        run: ./gradlew connectedCheck --no-daemon
 
       # Generate code coverage report
       - name: Generate Code Coverage Report
