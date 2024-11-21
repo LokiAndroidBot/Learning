@@ -4,8 +4,7 @@ on:
   push:
     branches:
       - main
-      - develop
-      - release/*  # Include other branches like release candidates
+      - dev
 
 jobs:
   # Job 1: Build APK
