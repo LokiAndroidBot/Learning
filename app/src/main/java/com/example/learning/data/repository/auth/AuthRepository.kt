@@ -9,7 +9,7 @@ interface AuthRepository {
 }
 
 class AuthRepositoryImpl @Inject constructor(
-    private val apiService: ApiService
+    private val apiService: ApiService,
 ) : AuthRepository {
 
     override suspend fun login(username: String, password: String): Result<Unit> {
@@ -32,7 +32,7 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun signup(
         username: String,
         password: String,
-        confirmPassword: String
+        confirmPassword: String,
     ): Result<Unit> {
         // Perform signup API call or logic here
         // Step 1: Check if passwords match

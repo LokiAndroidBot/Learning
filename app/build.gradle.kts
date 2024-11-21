@@ -32,7 +32,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -66,6 +66,7 @@ android {
         xmlOutput = file("$buildDir/reports/lint-results.xml")
     }
     ktlint {
+        version.set("0.49.1")
         debug.set(true) // Optional: Enable debugging
         android.set(true) // Android-specific rules
         outputToConsole.set(true)
@@ -99,9 +100,9 @@ tasks.register<JacocoReport>("advancedTestReport") {
                 // Unit test coverage
                 "jacoco/testDebugUnitTest.exec",
                 // Instrumentation coverage
-                "outputs/code_coverage/debugAndroidTest/connected/**/*.ec"
+                "outputs/code_coverage/debugAndroidTest/connected/**/*.ec",
             )
-        }
+        },
     )
 
     classDirectories.setFrom(
@@ -112,13 +113,13 @@ tasks.register<JacocoReport>("advancedTestReport") {
                 "**/BuildConfig.*",
                 "**/Manifest*.*",
                 "**/*Test*.*",
-                "android/**/*.*"
+                "android/**/*.*",
             )
-        }
+        },
     )
 
     sourceDirectories.setFrom(
-        files("src/main/java", "src/main/kotlin")
+        files("src/main/java", "src/main/kotlin"),
     )
 }
 

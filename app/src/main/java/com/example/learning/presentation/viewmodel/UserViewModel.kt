@@ -6,15 +6,15 @@ import com.example.learning.domain.FetchUserUseCase
 import com.example.learning.presentation.intent.UserIntent
 import com.example.learning.presentation.state.UserViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 // UserViewModel.kt
 @HiltViewModel
 class UserViewModel @Inject constructor(
-    private val fetchUserUseCase: FetchUserUseCase
+    private val fetchUserUseCase: FetchUserUseCase,
 ) : ViewModel() {
 
     private val _viewState = MutableStateFlow<UserViewState>(UserViewState.Idle)

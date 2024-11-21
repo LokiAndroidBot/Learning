@@ -30,13 +30,13 @@ fun SignupScreen(navController: NavHostController) {
             .fillMaxSize()
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
     ) {
         TextField(
             value = username,
             onValueChange = { username = it },
             label = { Text("Username") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
         Spacer(modifier = Modifier.height(8.dp))
         TextField(
@@ -44,7 +44,7 @@ fun SignupScreen(navController: NavHostController) {
             onValueChange = { password = it },
             label = { Text("Password") },
             visualTransformation = PasswordVisualTransformation(),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
         Spacer(modifier = Modifier.height(8.dp))
         TextField(
@@ -52,14 +52,14 @@ fun SignupScreen(navController: NavHostController) {
             onValueChange = { confirmPassword = it },
             label = { Text("Confirm Password") },
             visualTransformation = PasswordVisualTransformation(),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
         Spacer(modifier = Modifier.height(16.dp))
         Button(
             onClick = {
                 // Handle signup logic here
                 navController.navigate("user_app_screen")
-            }
+            },
         ) {
             Text("Sign Up")
         }

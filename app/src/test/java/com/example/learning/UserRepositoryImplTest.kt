@@ -32,13 +32,13 @@ class UserRepositoryImplTest {
             User(
                 name = Name("", "John Doe", ""),
                 email = "john.doe@example.com",
-                picture = Picture("")
+                picture = Picture(""),
             ),
             User(
                 name = Name("", "Jane Smith", ""),
                 email = "jane.smith@example.com",
-                picture = Picture("")
-            )
+                picture = Picture(""),
+            ),
         )
         val mockResponse = UserResponse(results = mockUserList)
         coEvery { mockApiService.fetchUsers(5) } returns mockResponse

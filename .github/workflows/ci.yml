@@ -74,7 +74,7 @@ jobs:
         run: ./gradlew ktlintCheck
 
       - name: Run ktlint format
-        run: ./gradlew ktlintFormat
+        run: ./gradlew ktlintFormat --rerun-tasks
 
 
       # Build and run unit tests
