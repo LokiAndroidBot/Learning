@@ -26,8 +26,8 @@ class FetchUserUseCaseTest {
             User(
                 Name("", "John Doe", ""),
                 email = "johndoe@example.com",
-                Picture(""),
-            ),
+                Picture("")
+            )
         )
         coEvery { userRepository.getUserData() } returns Result.success(mockUserList)
 

@@ -27,7 +27,7 @@ import com.example.learning.presentation.viewmodel.calc.CalculatorViewModel
 @Composable
 fun CalculatorScreen(
     navController: NavHostController,
-    viewModel: CalculatorViewModel = viewModel(),
+    viewModel: CalculatorViewModel = viewModel()
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -36,20 +36,20 @@ fun CalculatorScreen(
             .fillMaxSize()
             .padding(16.dp),
         verticalArrangement = Arrangement.SpaceBetween,
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Display Input and Result
         Text(
             text = state.input,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.End,
-            fontSize = 24.sp,
+            fontSize = 24.sp
         )
         Text(
             text = "Result: ${state.result}",
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.End,
-            fontSize = 20.sp,
+            fontSize = 20.sp
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -60,13 +60,13 @@ fun CalculatorScreen(
                 listOf("7", "8", "9", "+"),
                 listOf("4", "5", "6", "-"),
                 listOf("1", "2", "3", "*"),
-                listOf("C", "0", "=", "/"),
+                listOf("C", "0", "=", "/")
             )
 
             buttons.forEach { row ->
                 Row(
                     horizontalArrangement = Arrangement.SpaceEvenly,
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth()
                 ) {
                     row.forEach { button ->
                         Button(
@@ -76,14 +76,14 @@ fun CalculatorScreen(
                                     "=" -> viewModel.onIntent(CalculatorIntent.Calculate)
                                     "+", "-", "*", "/" -> viewModel.onIntent(
                                         CalculatorIntent.EnterOperator(
-                                            button,
-                                        ),
+                                            button
+                                        )
                                     )
 
                                     else -> viewModel.onIntent(CalculatorIntent.EnterNumber(button))
                                 }
                             },
-                            modifier = Modifier.size(64.dp),
+                            modifier = Modifier.size(64.dp)
                         ) {
                             Text(text = button)
                         }

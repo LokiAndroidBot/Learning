@@ -58,7 +58,7 @@ fun UserScreen(userViewModel: UserViewModel = hiltViewModel()) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.Center
     ) {
         when (val state = viewState) {
             is UserViewState.Idle -> Text("Enter a user ID to fetch user data.")
@@ -77,7 +77,7 @@ fun UserScreen(userViewModel: UserViewModel = hiltViewModel()) {
 fun UserContent(user: List<User>) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.Center
     ) {
         LazyColumn {
             items(user) { userDetails ->
@@ -95,7 +95,7 @@ fun UserItem(user: User) {
     AsyncImage(
         model = user.picture,
         contentDescription = "Image",
-        modifier = Modifier.size(128.dp),
+        modifier = Modifier.size(128.dp)
     )
 }
 

@@ -39,7 +39,7 @@ class CalculatorTest {
         device.findObject(By.text("=")).click() // Click "="
 
         // Check the result
-        val resultText = device.findObject(By.textContains("Result")).text // Replace with the actual ID of the result TextView
+        val resultText = device.findObject(By.textContains("Result")).text
         assertEquals("Result: 5.0", resultText)
     }
 
@@ -65,7 +65,7 @@ class CalculatorTest {
         device.findObject(By.text("=")).click()
 
         // Check the result
-        val resultText = device.findObject(By.textContains("Result")).text // Replace with the actual ID of the result TextView
+        val resultText = device.findObject(By.textContains("Result")).text
         assertEquals("Result: 2.0", resultText)
     }
 }
