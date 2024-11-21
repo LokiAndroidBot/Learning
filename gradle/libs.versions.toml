@@ -31,6 +31,10 @@ hiltAndroidTesting = "2.52"
 junitKtx = "1.2.1"
 testing = "1.0.0"
 firebaseCrashlyticsBuildtools = "3.0.2"
+kotlinxCoroutinesTest = "1.9.0"
+core = "1.6.1"
+runner = "1.6.2"
+ktlint = "11.6.0"
 
 
 [libraries]
@@ -84,6 +88,9 @@ mockitoCore = { group = "org.mockito", name = "mockito-core", version.ref = "moc
 androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
 testing = { group = "com.google.assistant.appactions", name = "testing", version.ref = "testing" }
 firebase-crashlytics-buildtools = { group = "com.google.firebase", name = "firebase-crashlytics-buildtools", version.ref = "firebaseCrashlyticsBuildtools" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
+androidx-core = { group = "androidx.test", name = "core", version.ref = "core" }
+androidx-runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
 
 [plugins]
 # Android Plugin
@@ -97,3 +104,7 @@ hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 
 # KSP Plugin for annotation processing
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+
+jacoco = { id = "jacoco" }
+
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }

@@ -24,6 +24,7 @@ import coil3.compose.AsyncImage
 import com.example.learning.data.model.User
 import com.example.learning.presentation.intent.UserIntent
 import com.example.learning.presentation.state.UserViewState
+import com.example.learning.presentation.ui.calc.CalculatorScreen
 import com.example.learning.presentation.viewmodel.UserViewModel
 
 @Composable
@@ -42,6 +43,9 @@ fun MyApp() {
         }
         composable("user_app_screen") {
             UserScreen()
+        }
+        composable("calc_screen") {
+            CalculatorScreen(navController)
         }
     }
 }

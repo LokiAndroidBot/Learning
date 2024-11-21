@@ -4,6 +4,10 @@ plugins {
 
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
+
+    alias(libs.plugins.ktlint)
+
+    jacoco
 }
 
 android {
@@ -27,7 +31,8 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
             )
         }
     }
@@ -53,47 +58,115 @@ android {
             excludes += "META-INF/NOTICE.txt"
             excludes += "META-INF/LICENSE-notice.md"
         }
-
+    }
+    lint {
+        htmlReport = true
+        xmlReport = true
+        htmlOutput = file("$project.buildDir/reports/lint-results.html")
+        xmlOutput = file("$project.buildDir/reports/lint-results.xml")
+    }
+    ktlint {
+        version.set("0.49.1")
+        debug.set(true) // Optional: Enable debugging
+        android.set(true) // Android-specific rules
+        outputToConsole.set(true)
+        ignoreFailures.set(false) // Fail build on lint issues
+        reporters {
+            reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.PLAIN) // Text output
+            reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE) // XML report
+        }
+        filter {
+            exclude("**/generated/**")
+            include("**/src/**")
+        }
     }
 }
+jacoco {
+    // Optionally, set the tool version for tasks if needed
+    toolVersion = "0.8.10"
+}
+tasks.register<JacocoReport>("advancedTestReport") {
+    dependsOn("testDebugUnitTest") // Run both unit and UI tests
+
+    reports {
+        xml.required.set(true) // Enable XML report (for CI integration)
+        html.required.set(true) // Enable HTML report
+        csv.required.set(false) // Optional: Enable CSV report if needed
+    }
+
+    executionData.setFrom(
+        fileTree("$project.buildDir") {
+            include(
+                // Unit test coverage
+                "jacoco/testDebugUnitTest.exec",
+                // Instrumentation coverage
+                "outputs/code_coverage/debugAndroidTest/connected/**/*.ec",
+            )
+        },
+    )
+
+    classDirectories.setFrom(
+        fileTree("$project.buildDir/intermediates/classes/debug") {
+            exclude(
+                "**/R.class",
+                "**/R$*.class",
+                "**/BuildConfig.*",
+                "**/Manifest*.*",
+                "**/*Test*.*",
+                "android/**/*.*",
+            )
+        },
+    )
+
+    sourceDirectories.setFrom(
+        files("src/main/java", "src/main/kotlin"),
+    )
+}
+
 dependencies {
     // -------------------- Core Android Libraries --------------------
-    implementation(libs.androidx.core.ktx)                   // Core KTX extensions
-    implementation(libs.androidx.lifecycle.runtime.ktx)      // Lifecycle KTX
-    implementation(libs.androidx.activity.compose)           // Activity Compose support
-    implementation(platform(libs.androidx.compose.bom))      // Compose BOM
-    implementation(libs.androidx.ui)                         // Compose UI
-    implementation(libs.androidx.ui.graphics)                // Graphics
-    implementation(libs.androidx.ui.tooling.preview)          // Preview tooling
-    implementation(libs.androidx.material3)                   // Material 3
+    implementation(libs.androidx.core.ktx) // Core KTX extensions
+    implementation(libs.androidx.lifecycle.runtime.ktx) // Lifecycle KTX
+    implementation(libs.androidx.activity.compose) // Activity Compose support
+    implementation(platform(libs.androidx.compose.bom)) // Compose BOM
+    implementation(libs.androidx.ui) // Compose UI
+    implementation(libs.androidx.ui.graphics) // Graphics
+    implementation(libs.androidx.ui.tooling.preview) // Preview tooling
+    implementation(libs.androidx.material3) // Material 3
 
     // -------------------- Networking Libraries --------------------
-    implementation(libs.retrofit)                             // Retrofit for API calls
-    implementation(libs.converter.gson)                       // Gson converter for Retrofit
-    implementation(libs.kotlinx.coroutines.android)           // Coroutine support
-    implementation(libs.coil.compose)                         // Coil for image loading in Compose
-    implementation(libs.logging.interceptor)                  // Logging interceptor for Retrofit
+    implementation(libs.retrofit) // Retrofit for API calls
+    implementation(libs.converter.gson) // Gson converter for Retrofit
+    implementation(libs.kotlinx.coroutines.android) // Coroutine support
+    implementation(libs.coil.compose) // Coil for image loading in Compose
+    implementation(libs.logging.interceptor) // Logging interceptor for Retrofit
 
     // -------------------- Dependency Injection --------------------
     implementation(libs.hilt.android)
     implementation(libs.androidx.junit.ktx)
     implementation(libs.testing)
-    implementation(libs.firebase.crashlytics.buildtools)                         // Hilt Android
-    testImplementation(libs.hilt.android.testing)            // Hilt Android support for tests
-    ksp(libs.hilt.compiler)                                  // Hilt compiler (using KSP)
-    implementation(libs.androidx.hilt.navigation.compose)    // Hilt navigation support for Compose
+    implementation(libs.firebase.crashlytics.buildtools) // Hilt Android
+    testImplementation(libs.hilt.android.testing)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.uiautomator)
+    androidTestImplementation(libs.androidx.core)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.runner) // Hilt Android support for tests
+    ksp(libs.hilt.compiler) // Hilt compiler (using KSP)
+    implementation(libs.androidx.hilt.navigation.compose) // Hilt navigation support for Compose
 
     // -------------------- Testing Libraries --------------------
     // Unit Testing
-    testImplementation(libs.mockk)                            // MockK for unit tests
-    androidTestImplementation(libs.mockkAndroid)             // MockK for unit tests
+    testImplementation(libs.mockk) // MockK for unit tests
+    androidTestImplementation(libs.mockkAndroid) // MockK for unit tests
 
     // Android Instrumentation Tests
     androidTestImplementation(platform(libs.androidx.compose.bom)) // Compose BOM for Android tests
-    androidTestImplementation(libs.androidx.ui.test.junit4)  // UI testing for Compose
-    androidTestImplementation(libs.androidx.ui.test.manifest)        // Manifest for Compose UI tests
+    androidTestImplementation(libs.androidx.ui.test.junit4) // UI testing for Compose
+    androidTestImplementation(libs.androidx.ui.test.manifest) // Manifest for Compose UI tests
 
     // -------------------- Debugging Tools --------------------
-    debugImplementation(libs.androidx.ui.tooling)           // Tooling support for Compose in debug mode
-    debugImplementation(libs.androidx.ui.test.manifest)     // Manifest testing support for Compose
+    debugImplementation(libs.androidx.ui.tooling) // Tooling support for Compose in debug mode
+    debugImplementation(libs.androidx.ui.test.manifest) // Manifest testing support for Compose
 }

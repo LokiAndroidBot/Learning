@@ -13,19 +13,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+
+      # Checkout the repository
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
+      # Set up JDK 17
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: 17
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x ./gradlew
-
-      - name: Cache Gradle dependencies
+      # Cache Gradle dependencies
+      - name: Cache Gradle Dependencies
         uses: actions/cache@v3
         with:
           path: |
@@ -35,34 +36,92 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      #- name: Check spotless
-      #  run: ./gradlew spotlessCheck --init-script gradle/init.gradle.kts --no-configuration-cache
+      #      # Set up Android SDK
+      #      - name: Set up Android SDK
+      #        uses: android-actions/setup-android@v2
+      #        with:
+      #          api-level: 30
+      #          build-tools: 30.0.3
+      #          target: google_apis
+      #
+      #      # Install Required System Images
+      #      - name: Install Required System Images
+      #        run: |
+      #          sdkmanager --install "platforms;android-30" "platform-tools" "build-tools;30.0.3"
+      #          sdkmanager --install "system-images;android-30;google_apis;x86"
 
-      - name: Check spotless
+      # Grant execute permission for Gradle wrapper
+      - name: Grant Execute Permission for Gradlew
+        run: chmod +x ./gradlew
+
+      #      # Restart ADB
+      #      - name: Restart ADB
+      #        run: adb kill-server && adb start-server
+
+      # Spotless check and apply formatting
+      - name: Apply Spotless Formatting
         run: ./gradlew spotlessApply --init-script gradle/init.gradle.kts --no-configuration-cache
 
-      - name: Build and run unit tests
-        run: ./gradlew testDebugUnitTest --no-daemon
-
-      - name: Run lint check
+      # Run lint checks
+      - name: Run Lint Check
         run: ./gradlew lintDebug --no-daemon
 
-      - name: Run lint Fix
-        run: ./gradlew lintFixDebug
+      # Apply Lint Fix (if needed)
+      - name: Apply Lint Fix
+        run: ./gradlew lintFixDebug --no-daemon
 
-      #- name: Run instrumentation tests
-      #  run: ./gradlew connectedAndroidTest --no-daemon
+      - name: Run ktlint check
+        run: ./gradlew ktlintCheck
 
-      #- name: Generate code coverage report
-      #  run: ./gradlew jacocoTestReport
+      - name: Run ktlint format
+        run: ./gradlew ktlintFormat --rerun-tasks
 
-      #      - name: Upload code coverage to Codecov
-      #        uses: codecov/codecov-action@v3
-      #        with:
-      #          file: ./app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
-      #          flags: unittests
-      #          name: codecov-umbrella
-      #          fail_ci_if_error: true
 
-      # - name: Run dependency analysis
-    #  run: ./gradlew dependencyCheckAnalyze
+      # Build and run unit tests
+      - name: Build and Run Unit Tests
+        run: ./gradlew testDebugUnitTest --no-daemon
+#
+#      # Set up Android Emulator
+#      - name: Set up Android Emulator
+#        uses: reactivecircus/android-emulator-runner@v2
+#        with:
+#          api-level: 30
+#          target: google_apis
+#          arch: x86_64
+#          profile: Nexus 5
+#          cores: 1
+#          ram-size: 1536
+#          emulator-boot-timeout: 1200
+#          disable-animations: true
+#          force-avd-creation: true
+#          emulator-options: -no-window -gpu off -no-snapshot -no-snapshot-load -no-snapshot-save -noaudio -no-boot-anim -wipe-data
+#          script: ./gradlew connectedAndroidTest
+#
+#      # Verify ADB Devices
+#      - name: Verify ADB Devices
+#        run: adb devices
+#
+#      # Run Instrumentation Tests
+#      - name: Run Instrumentation Tests
+#        run: ./gradlew connectedAndroidTest --no-daemon
+#
+#      # Run connected tests
+#      - name: Run Connected Tests
+#        run: ./gradlew connectedCheck --no-daemon
+
+      # Generate code coverage report
+      - name: Generate Code Coverage Report
+        run: ./gradlew advancedTestReport
+
+      # Upload code coverage to Codecov (Optional, commented out)
+      # - name: Upload Code Coverage to Codecov
+      #   uses: codecov/codecov-action@v3
+      #   with:
+      #     file: ./app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
+      #     flags: unittests
+      #     name: codecov-umbrella
+      #     fail_ci_if_error: true
+
+      # Dependency analysis (Optional, commented out)
+      # - name: Run Dependency Analysis
+      #   run: ./gradlew dependencyCheckAnalyze

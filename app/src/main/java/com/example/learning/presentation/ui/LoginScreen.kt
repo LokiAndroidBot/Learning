@@ -1,6 +1,5 @@
 package com.example.learning.presentation.ui
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -13,7 +12,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -32,7 +30,7 @@ fun LoginScreen(navController: NavHostController, authViewModel: AuthViewModel =
     val context = LocalContext.current
 
     // Handle Navigation or Errors
-    LaunchedEffect(key1 = state.isLoading, key2 = state.errorMessage) {
+    /*LaunchedEffect(key1 = state.isLoading, key2 = state.errorMessage) {
         if (!state.isLoading) {
             if (state.errorMessage == null) {
                 navController.navigate("user_app_screen")
@@ -40,7 +38,7 @@ fun LoginScreen(navController: NavHostController, authViewModel: AuthViewModel =
                 Toast.makeText(context, state.errorMessage, Toast.LENGTH_SHORT).show()
             }
         }
-    }
+    }*/
 
     Column(
         modifier = Modifier
