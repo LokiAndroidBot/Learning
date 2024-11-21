@@ -1,19 +1,19 @@
-name: Build and Upload APK to Diawi
-
+name: Build, Upload APK to Diawi, Notify, and Version
 
 on:
   push:
     branches:
-      - dev  # Change to your desired branch
+      - main
+      - develop
+      - release/*  # Include other branches like release candidates
 
 jobs:
+  # Job 1: Build APK
   build:
     runs-on: ubuntu-latest
-
     steps:
-
-      # Checkout the repository
-      - name: Checkout Repository
+      # Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v3
 
       # Set up JDK 17
@@ -36,31 +36,118 @@ jobs:
       - name: Grant Execute Permission for Gradlew
         run: chmod +x ./gradlew
 
-      # Build APK
-      - name: Build Release APK
-        run: ./gradlew assembleRelease
+      # Build APK for both release and debug flavors
+      - name: Build Release and Debug APKs
+        run: |
+          ./gradlew assembleRelease
+          ./gradlew assembleDebug
+
+      # List files in APK directory (for debugging purposes)
+      - name: List files in APK directory
+        run: ls -l app/build/outputs/apk/
+
+  # Job 2: Upload APK to Diawi and handle versioning
+  upload:
+    runs-on: ubuntu-latest
+    needs: build  # Ensures this runs only after the build job
+    steps:
+      # Set up environment variables
+      - name: Set environment variables
+        run: echo "DIAWI_API_KEY=${{ secrets.DIAWI_API_KEY }}" >> $GITHUB_ENV
+
+      # Generate a version code based on Git commit hash or tag
+      - name: Generate APK Version
+        run: |
+          VERSION_CODE=$(git rev-list --count HEAD)
+          VERSION_NAME="v${VERSION_CODE}"
+          echo "VERSION_NAME=${VERSION_NAME}" >> $GITHUB_ENV
+          echo "VERSION_CODE=${VERSION_CODE}" >> $GITHUB_ENV
 
       # Upload APK to Diawi and get the link
-      - name: Upload APK to Diawi
-        id: upload_diawi
+      - name: Upload Release APK to Diawi
+        id: upload_release
         run: |
-          DIAWI_API_KEY="${{ secrets.DIAWI_API_KEY }}"
           APK_PATH="app/build/outputs/apk/release/app-release.apk"
-
-          # Upload APK using curl and save the response
+          if [ ! -f "$APK_PATH" ]; then
+            echo "Release APK not found. Exiting."
+            exit 1
+          fi
           DIAWI_RESPONSE=$(curl -X POST \
             -F "file=@${APK_PATH}" \
             -F "token=${DIAWI_API_KEY}" \
             -F "install=true" \
             https://upload.diawi.com/)
-          
-          # Extract the link from the response using jq
           DIAWI_LINK=$(echo $DIAWI_RESPONSE | jq -r .link)
-          
-          # Set the link as an environment variable
           echo "DIAWI_LINK=${DIAWI_LINK}" >> $GITHUB_ENV
 
-      # Show the Diawi link
-      - name: Show Diawi link
+      - name: Upload Debug APK to Diawi (Optional)
+        id: upload_debug
         run: |
-          echo "APK is available at: ${{ env.DIAWI_LINK }}"
+          APK_PATH="app/build/outputs/apk/debug/app-debug.apk"
+          if [ ! -f "$APK_PATH" ]; then
+            echo "Debug APK not found. Skipping."
+            exit 0
+          fi
+          DIAWI_RESPONSE=$(curl -X POST \
+            -F "file=@${APK_PATH}" \
+            -F "token=${DIAWI_API_KEY}" \
+            -F "install=true" \
+            https://upload.diawi.com/)
+          DIAWI_LINK=$(echo $DIAWI_RESPONSE | jq -r .link)
+          echo "DIAWI_DEBUG_LINK=${DIAWI_LINK}" >> $GITHUB_ENV
+
+#  # Job 3: Notify Stakeholders (Slack, Email, etc.)
+#  notify:
+#    runs-on: ubuntu-latest
+#    needs: upload  # This ensures it runs only after the upload job
+#    steps:
+#      # Notify via Slack
+#      - name: Send Slack notification
+#        uses: slackapi/slack-github-action@v1.21.0
+#        with:
+#          slack_token: ${{ secrets.SLACK_API_TOKEN }}
+#          channel: '#deployment-notifications'
+#          text: |
+#            A new APK has been uploaded to Diawi:
+#            - **Release APK**: ${{ env.DIAWI_LINK }}
+#            {% if env.DIAWI_DEBUG_LINK %}
+#            - **Debug APK**: ${{ env.DIAWI_DEBUG_LINK }}
+#            {% endif %}
+#            Deployment was successful on branch `${{ github.ref }}`.
+#
+#      # Optional: Send Email notification
+#      - name: Send Email Notification
+#        uses: dawidd6/action-send-mail@v3
+#        with:
+#          smtp-server: smtp.mailtrap.io
+#          smtp-port: 587
+#          smtp-username: ${{ secrets.SMTP_USERNAME }}
+#          smtp-password: ${{ secrets.SMTP_PASSWORD }}
+#          from: 'deploy@yourcompany.com'
+#          to: 'team@yourcompany.com'
+#          subject: 'APK Uploaded to Diawi'
+#          body: |
+#            A new APK has been successfully uploaded to Diawi.
+#            - Release APK: ${{ env.DIAWI_LINK }}
+#            {% if env.DIAWI_DEBUG_LINK %}
+#            - Debug APK: ${{ env.DIAWI_DEBUG_LINK }}
+#            {% endif %}
+#            Deployment branch: `${{ github.ref }}`.
+#
+#  # Job 4: Version APK (Optional)
+#  versioning:
+#    runs-on: ubuntu-latest
+#    needs: build
+#    steps:
+#      - name: Version APK with Git tag or commit hash
+#        run: |
+#          VERSION_CODE=$(git rev-list --count HEAD)
+#          VERSION_NAME="v${VERSION_CODE}"
+#          echo "VERSION_NAME=${VERSION_NAME}" >> $GITHUB_ENV
+#          echo "VERSION_CODE=${VERSION_CODE}" >> $GITHUB_ENV
+#
+#      - name: Update Version in build.gradle (if needed)
+#        run: |
+#          sed -i "s/versionCode .*/versionCode ${VERSION_CODE}/" app/build.gradle
+#          sed -i "s/versionName .*/versionName \"${VERSION_NAME}\"/" app/build.gradle
+#          ./gradlew clean assembleRelease
