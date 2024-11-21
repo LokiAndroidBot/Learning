@@ -65,7 +65,7 @@ jobs:
       - name: Upload Release APK to Diawi
         id: upload_release
         run: |
-          APK_PATH="app/build/outputs/apk/release/app-release.apk"
+          APK_PATH="app/build/outputs/apk/release/app-release-unsigned.apk"
           
           # Check if Release APK exists
           if [ ! -f "$APK_PATH" ]; then
