@@ -62,8 +62,8 @@ android {
     lint {
         htmlReport = true
         xmlReport = true
-        htmlOutput = file("$buildDir/reports/lint-results.html")
-        xmlOutput = file("$buildDir/reports/lint-results.xml")
+        htmlOutput = file("$project.buildDir/reports/lint-results.html")
+        xmlOutput = file("$project.buildDir/reports/lint-results.xml")
     }
     ktlint {
         version.set("0.49.1")
@@ -95,7 +95,7 @@ tasks.register<JacocoReport>("advancedTestReport") {
     }
 
     executionData.setFrom(
-        fileTree(buildDir) {
+        fileTree("$project.buildDir") {
             include(
                 // Unit test coverage
                 "jacoco/testDebugUnitTest.exec",
@@ -106,7 +106,7 @@ tasks.register<JacocoReport>("advancedTestReport") {
     )
 
     classDirectories.setFrom(
-        fileTree("$buildDir/intermediates/classes/debug") {
+        fileTree("$project.buildDir/intermediates/classes/debug") {
             exclude(
                 "**/R.class",
                 "**/R$*.class",
